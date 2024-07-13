@@ -1,0 +1,8 @@
+{
+  "example": {
+    "command": "dolphin",
+    "defaultArgs": ["pwd"],
+    "showLogs": true,
+    "forceFreeTerminal": false
+  }
+}
