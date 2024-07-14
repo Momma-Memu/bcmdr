@@ -1,17 +1,15 @@
 // @ts-check
 
-import { readFile, writeFile } from 'node:fs';
-import { createRequire } from "module";
-import BashCommandError from './internal/BCError.js';
-import WhoCommand from "./WhoCommand.js";
-const config = createRequire(import.meta.url)("./config/config.json");
-const aliases = createRequire(import.meta.url)("./config/aliases.json");
+import BashCommandError from './BCError.js';
+import BCObject from './BCObject.js';
+
+// import WhoCommand from "./WhoCommand.js";
 
 /** 
  * - Manages the retrieval, appending, editing, and removing of aliases within
  * the a specified bash config file, or default .bashrc file.
 */
-export default class AliasEditor {
+export default class AliasEditor extends BCObject {
   #configPath = "./config/config.json";
   #aliasPath = "./config/aliases.json";
   #aliasNote = `# NOTE: Editing the comment above, or the last comment below, is not advised.
@@ -19,16 +17,14 @@ export default class AliasEditor {
 # You may move these two comments anywhere you like within this file but their
 # content must NOT be altered.`;
 
-  #who = new WhoCommand();
   #usrNameErr = new BashCommandError({
     name: "AliasEditor_Error",
     msg: "Unable to determine username from the internal, 'WhoCommand'.",
   });
 
   constructor() {
+    
     /** @type {{ username: string, path: string }} */
-    this.config = config;
-    this.aliases = aliases;
     
     if (!this.config.username || !this.config.path) {
       try {

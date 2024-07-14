@@ -1,4 +1,4 @@
-export const helpStr = () => `
+export const helpStr = () => console.log(`
 ~ Bash Commander Help Menu ~
 
 - Help Menu
@@ -9,15 +9,15 @@ export const helpStr = () => `
 
 - Show Alias Tutorial 
     bcmdr --tutorial | -t
-`;
+`);
 
-export const configStr = (config, bcmdrPath) => `
+export const configStr = (config, bcmdrPath) => console.log(`
 Username: ${config.username}
 Bash File Path: ${config.path}
 Config File Path: ${config.path.split("/").slice(0, 3).join("/")}${bcmdrPath}
-`;
+`);
 
-export const tutorialStr = () => `
+export const tutorialStr = () => console.log(`
 ~ How To Guides ~
 
 - ADD Alias
@@ -49,4 +49,4 @@ export const tutorialStr = () => `
   Examples:
   bcmdr --remove open
   bcmdr -r open
-`;
+`);

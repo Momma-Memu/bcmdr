@@ -1,5 +1,5 @@
 {
-  "example": {
+  "dolphin": {
     "command": "dolphin",
     "defaultArgs": ["pwd"],
     "showLogs": true,

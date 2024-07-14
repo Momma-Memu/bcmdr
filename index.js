@@ -1,34 +1,25 @@
 import { argv } from "node:process";
-import { createRequire } from "module";
-import { helpStr, configStr, tutorialStr } from "./BashCommander/internal/outputStrings.js";
-import AliasEditor from "./BashCommander/AliasEditor.js";
+import BCObject from "./BashCommander/utils/BCObject.js";
+// import AliasEditor from "./BashCommander/utils/AliasEditor.js";
 
 
-const config = createRequire(import.meta.url)("./BashCommander/config/config.json");
-
-class BashCommander {
-  #bcmdrPath = "/bcmdr/BashCommander/config/config.json";
-  #main = "";
-
+class BashCommander extends BCObject {
+  #aliasName = "";
   #argMap = {
-    h: () => this.helpCmd(),
-    help: () => this.helpCmd(),
+    h: () => this.logHelp(),
+    help: () => this.logHelp(),
     
-    c: () => this.configCmd(),
-    config: () => this.configCmd(),
+    c: () => this.logConfig(),
+    config: () => this.logConfig(),
 
-    t: () => this.tutorialCmd(),
-    tutorial: () => this.tutorialCmd(),
+    t: () => this.logTutorial(),
+    tutorial: () => this.logTutorial(),
 
     l: () => this.showAliases(),
     list: () => this.showAliases(),
   }
   
-  #aliasEditor = new AliasEditor();
-  #config = config;
-
-  args = [];
-
+  // #aliasEditor = new AliasEditor();
   constructor() {
     if (argv.length > 2) {
       this.args = [...argv.slice(2)];
@@ -38,48 +29,30 @@ class BashCommander {
     }
   }
 
-  get config() {
-    return this.#config;
-  }
-
   showAliases() {
-    this.#aliasEditor.listAliases();
+    // this.#aliasEditor.listAliases();
   }
 
   addAlias() {
-    this.#aliasEditor.addAlias();
+    // this.#aliasEditor.addAlias();
   }
 
   editAlias() {
-    this.#aliasEditor.editAlias();
+    // this.#aliasEditor.editAlias();
   }
 
   removeAliase() {
-    this.#aliasEditor.removeAlias();
-  }
-
-  tutorialCmd() {
-    console.log(tutorialStr());
-  }
-
-  configCmd() {
-    console.log(configStr(this.config, this.#bcmdrPath))
-  }
-
-  helpCmd() {
-    console.log(helpStr());
+    // this.#aliasEditor.removeAlias();
   }
 
   #parse() {
-    const flags = this.args.join("").split("-").filter((arg) => arg !== "");
-
-    if (!flags.length) {
-      this.helpCmd();
+    if (!this.parsedArgs.length) {
+      this.logHelp();
     } else {
-      this.#main = flags[0];
+      this.#aliasName = flags[0];
 
-      if (!this.#argMap[this.#main]) {
-        this.helpCmd();
+      if (!this.#argMap[this.#aliasName]) {
+        this.logHelp();
       } else {
         const method = this.#argMap[flags[0]];
 
