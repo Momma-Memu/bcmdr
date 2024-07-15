@@ -1,7 +1,9 @@
 // @ts-check
 
-import BashCommandError from './BCError.js';
 import BCObject from './BCObject.js';
+import BashCommand from '../Command/index.js';
+import BashCommandError from './BCError.js';
+import FileManager from "./FileManager.js";
 
 // import WhoCommand from "./WhoCommand.js";
 
@@ -10,8 +12,14 @@ import BCObject from './BCObject.js';
  * the a specified bash config file, or default .bashrc file.
 */
 export default class AliasEditor extends BCObject {
-  #configPath = "./config/config.json";
-  #aliasPath = "./config/aliases.json";
+  /** @type {FileManager} */
+  #configFile;
+  /** @type {FileManager} */
+  #bashFile;
+  /** @type {FileManager} */
+  #aliasFile;
+  
+
   #aliasNote = `# NOTE: Editing the comment above, or the last comment below, is not advised.
 # BashCommander relies on these two comments in order to edit your BashCommands.
 # You may move these two comments anywhere you like within this file but their
@@ -23,26 +31,31 @@ export default class AliasEditor extends BCObject {
   });
 
   constructor() {
-    
-    /** @type {{ username: string, path: string }} */
+    super();
     
     if (!this.config.username || !this.config.path) {
       try {
-        this.#updateConfig();
+        this.#initConfig();
       } catch (err) {
         console.error(err);
       }
+    } else {
+      this.#loadFiles();
     }
   }
 
-  listAliases() {
-    this.#readFile(this.config.path, (data) => this.#listAliases(data));
-  }
-
+  /** 
+   * @param {{
+   *  command: string,
+   *  defaultArgs: Array<string>,
+   *  showLogs: boolean,
+   *  forceFreeTerminal: boolean
+   * }} alias  
+   */
   addAlias(alias) {
-    this.aliases[alias.name] = alias;
+    this.usrAliases[alias.command] = alias;
 
-    this.#writeFile(this.#aliasPath, aliases);
+    // this.#writeFile(this.#aliasPath, aliases);
   }
 
   editAlias() {
@@ -57,69 +70,25 @@ export default class AliasEditor extends BCObject {
 
   }
 
-  /** @param {string} data  */
-  #listAliases(data) {
-    const relevant = data.split("# ---------- BashCommanderJS ----------")[1];
-    const aliases = relevant.split("alias ").slice(1);
-
-    if (!aliases.length) {
-      console.log(`- Could not find any BashCommander aliases found within file, "${this.config.path}"\n\nHINT:`);
-      console.log("Is this the intended file BashCommander should interface with?");
-      console.log("It may also be possible you have not made an alias yet.")
-    } else {
-      aliases.forEach(alias => console.log(alias));
-    }
-  }
-
-  async #updateConfig() {
-    this.config.username = await this.#who.run();
+  async #initConfig() {
+    this.config.username = await this.internalCmds.whoami.run();
     this.config.path = `/home/${this.config.username}/.bashrc`;
-
-    if (!this.config.username) {
-      throw this.#usrNameErr;
-    } else {
-      this.#saveConfig();
-    }
+    
+    this.#loadFiles();
   }
 
-  #saveConfig() {
-    const json = JSON.stringify(this.config, null, 2);
-    this.#writeFile(this.#configPath, json);
+  #loadFiles() {
+    this.#configFile = new FileManager(`/home/${this.config.username}${this.bcmdrPath}config.json`);
+    this.#aliasFile = new FileManager(`/home/${this.config.username}${this.bcmdrPath}aliases.json`);
+    this.#bashFile = new FileManager(this.config.path, true);
   }
 
-  /**
-   * @param {string} path 
-   * @param {function | undefined} callback? 
-  */
-  #readFile(path, callback = undefined) {
-    readFile(path, 'utf8', (err, data) => {
-      if (err) {
-        throw new BashCommandError({
-          name: "FileReaderError: ",
-          msg: `Could not open, or locate file at the given path, "${path}"`
-        });
-      } else {
-        const fileData = data;
-
-        if (callback) {
-          callback(fileData);
-        }
-      }
-    });
-  }
-
-  /**
-   * @param {string} path 
-   * @param {string} data 
-  */
-  #writeFile(path, data) {
-    writeFile(path, data, 'utf8', (err) => {
-      if (err) {
-        throw new BashCommandError({
-          name: "FileWriterError: ",
-          msg: `Could not write to, or locate file at the given path, "${path}"`
-        });
-      }
-    }); 
+  #save() {
+    this.#configFile.saveChanges(this.config);
+    this.#aliasFile.saveChanges(this.usrAliases);
   }
 }
+
+
+const poop = new AliasEditor();
+

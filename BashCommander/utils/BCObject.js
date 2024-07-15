@@ -5,9 +5,8 @@ import internalCmds from '../Command/Internal.js';
 import { config, aliases } from "../config/index.js";
 import { helpStr, configStr, tutorialStr } from "./outputStrings.js";
 
-/** @typedef {import("../Command/BashCommand.js").default} BashCommand */
 
-export default class BCObject {
+class BCObject {
   /** @type {Array<string>} */
   #args = argv.slice(2) || [];
   
@@ -15,7 +14,7 @@ export default class BCObject {
   #parsedArgs = [];
   
   #internalCmds = internalCmds;
-  #bcmdrPath = "/bcmdr/BashCommander/config/config.json";
+  #bcmdrPath = "/bcmdr/BashCommander/config/";
   #config = config;
   #aliases = aliases;
 
@@ -37,7 +36,20 @@ export default class BCObject {
     return this.#config;
   }
 
-  /** @returns {Object.<string, BashCommand>} */
+  /** @param {{ username: string, path: string }} config */
+  set config(config) {
+    this.#config = config;
+  }
+
+  /** 
+   * @returns {Object.<string, 
+   * {
+   *  command: string, 
+   *  defaultArgs: Array<string>,
+   *  showLogs: boolean,
+   *  forceFreeTerminal: boolean
+   * }>} 
+   */
   get usrAliases () {
     return this.#aliases;
   }
@@ -53,13 +65,6 @@ export default class BCObject {
   get parsedArgs () {
     return this.#parsedArgs;
   }
-
-  /** @param {string} name */
-  getAliasByName (name) {
-    if (name in this.usrAliases) {
-      return this.usrAliases[name];
-    }
-
-    return null;
-  }
 }
+
+export default BCObject;

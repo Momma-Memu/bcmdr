@@ -6,8 +6,6 @@ export default class BashCommandError extends Error {
    */
   constructor({ name, msg }) {
     super(msg);
-
     this.name = name;
-    this.msg = msg;
   }
 }

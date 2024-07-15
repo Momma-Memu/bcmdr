@@ -1,4 +1,5 @@
-import { readFile, writeFile } from 'node:fs';
+import { writeFile, readFileSync } from 'node:fs';
+import BashCommandError from './BCError.js';
 
 export default class FileManager {
   #content;
@@ -11,12 +12,18 @@ export default class FileManager {
    * @constructor
    * @name FileManager
    * @param {string} path
-   * @param {boolean} isJson?
+   * @param {boolean} openNow?
    */
-  constructor(path, isJson = false) {
+  constructor(path, openNow = false) {
     this.#path = path;
-    this.isJson = isJson;
-    this.#readFile(path)
+    this.openNow = openNow;
+
+    const filePathParts = this.#path.split(".");
+    this.isJson = filePathParts[filePathParts.length] === "json";
+    
+    if (openNow) {
+      this.readFile();
+    }
   }
 
   /** @returns {string | {}} */
@@ -24,38 +31,35 @@ export default class FileManager {
     return this.#content || "";
   }
 
-  saveChanges(test) {
-    if (!test) {
-      this.#writeFile(this.#path);
+  saveChanges(data) {
+    if (this.isJson) {
+      const json = JSON.stringify(data, null, 2);
+      this.#writeFile(json);
+    } else {
+
     }
   }
 
-  #readFile() {
-    readFile(this.#path, 'utf8', (err, data) => {
-      if (err) {
-        throw new BashCommandError({
-          name: "FileReaderError: ",
-          msg: `Could not open, or locate file at the given path, "${path}"`
-        });
-      } else {
-        if (this.isJson) {
-          this.#content = JSON.parse(data);
-        } else {
-          this.#content = data;
-        }
+  readFile() {
+    try {
+      if (!this.isJson) {
+        this.#content = readFileSync(this.#path, { encoding: 'utf8', flag: 'r' });
       }
-    });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /** @param {string} data */
   #writeFile(data) {
-    writeFile(this.#path, data, 'utf8', (err) => {
-      if (err) {
-        throw new BashCommandError({
-          name: "FileWriterError: ",
-          msg: `Could not write to, or locate file at the given path, "${path}"`
-        });
-      }
-    }); 
+    print(data);
+    // writeFile(this.#path, data, 'utf8', (err) => {
+    //   if (err) {
+    //     throw new BashCommandError({
+    //       name: "FileWriterError: ",
+    //       msg: `Could not write to, or locate file at the given path, "${this.#path}"`
+    //     });
+    //   }
+    // }); 
   }
 }

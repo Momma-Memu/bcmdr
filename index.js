@@ -1,10 +1,11 @@
-import { argv } from "node:process";
 import BCObject from "./BashCommander/utils/BCObject.js";
-// import AliasEditor from "./BashCommander/utils/AliasEditor.js";
+import BashCommand from "./BashCommander/Command/index.js";
+import BashCommandError from "./BashCommander/utils/BCError.js";
+import AliasEditor from "./BashCommander/utils/AliasEditor.js";
 
 
 class BashCommander extends BCObject {
-  #aliasName = "";
+  #aliasEditor = new AliasEditor();
   #argMap = {
     h: () => this.logHelp(),
     help: () => this.logHelp(),
@@ -19,18 +20,14 @@ class BashCommander extends BCObject {
     list: () => this.showAliases(),
   }
   
-  // #aliasEditor = new AliasEditor();
   constructor() {
-    if (argv.length > 2) {
-      this.args = [...argv.slice(2)];
-      this.#parse();
-    } else {
-      this.helpCmd();
-    }
+    super();
+    this.#parse();
   }
 
   showAliases() {
-    // this.#aliasEditor.listAliases();
+    console.log("\n~ Your Aliases ~\n");
+    console.log(this.usrAliases, "\n");
   }
 
   addAlias() {
@@ -46,19 +43,73 @@ class BashCommander extends BCObject {
   }
 
   #parse() {
-    if (!this.parsedArgs.length) {
+    if (!this.#validateArgs()) {
       this.logHelp();
+    } else if (this.#isBCmdCLI()) {
+      this.#argMap[this.parsedArgs[0]]();
     } else {
-      this.#aliasName = flags[0];
+      const { command, defaultArgs, forceFreeTerminal, showLogs } = this.#isInternalCmd() || this.#isUsrCmd();
+      const chain = new BashCommand(command, this.#buildCmdChain(defaultArgs), forceFreeTerminal, showLogs);
+      console.log(chain);
+    }
+  }
+  
+  #isBCmdCLI() {
+    return this.#argMap[this.parsedArgs[0]];
+  }
 
-      if (!this.#argMap[this.#aliasName]) {
-        this.logHelp();
-      } else {
-        const method = this.#argMap[flags[0]];
+  #isInternalCmd(name = this.parsedArgs[0]) {
+    return this.internalCmds[name];
+  }
 
-        method();
+  #isUsrCmd(name = this.parsedArgs[0]) {
+    return this.usrAliases[name];
+  }
+
+  #validateArgs() {
+    return this.parsedArgs.length && (this.#isInternalCmd() || this.#isUsrCmd());
+  }
+
+  /** 
+   * @param {Array<string>} commandChain  
+   * @param {Array<BashCommand>} commandChain?
+   * @param {number} depth?
+   * @returns {Array<BashCommand>}
+   */
+  #buildCmdChain(commandChain = [], commandTree = [], depth = 0) {
+    // TODO: Need to add option for non BashCommand args...
+    if (!commandChain || (Array.isArray(commandChain) && !commandChain.length)) {
+      console.log(commandTree);
+      return [];
+    }
+
+    for (let command of commandChain) {
+      if (this.#isUnsafe(command, commandTree)) {
+        throw new BashCommandError({
+          name: "BashCommanderError",
+          msg: `IllegalCommandChain: ${command} executes a parent. This is a WARNING that the command was rejected and results in a stack overflow.`,
+        });
       }
     }
+
+    commandTree.push(commandChain);
+
+    return commandChain.map((name) => {
+      const bcmd = this.#isInternalCmd(name) || this.#isUsrCmd(name);
+
+      const { command, defaultArgs, forceFreeTerminal, showLogs } = bcmd;
+      return new BashCommand(command, this.#buildCmdChain(defaultArgs, commandTree, depth + 1), forceFreeTerminal, showLogs);
+    });
+  }
+
+  /**
+   * @param {string} command
+   * @param {Array<Array<string>>} tree
+   */
+  #isUnsafe(command, tree) {
+    return tree.some((cmdNames) =>{
+      return cmdNames.some(name => name === command);
+    });
   }
 }
 

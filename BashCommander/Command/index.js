@@ -1,7 +1,6 @@
 import { spawn } from "node:child_process";
 import { argv } from "node:process";
 
-
 export default class BashCommand {
   /**
    * A re-usable NodeJS command line object that allows you to quickly 
@@ -35,7 +34,6 @@ export default class BashCommand {
         throw new Error("")
       }
   
-      this.#init();
     } catch (err) {
       console.error(err);
     }
@@ -100,13 +98,5 @@ export default class BashCommand {
     logStr += exitCode ? `Exit Code: ${exitCode}\n` : "";
     
     return logStr;
-  }
-
-  #init() {
-    if (argv.length > 2) {
-      this.args = [...argv.slice(2)];
-    } else if (this.defaultArgs.length) {
-      this.args.push(...this.defaultArgs);
-    }
   }
 }

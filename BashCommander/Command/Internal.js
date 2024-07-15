@@ -1,4 +1,4 @@
-import BashCommand from "./BashCommand.js";
+import BashCommand from "./index.js";
 
 export default {
   pwd: new BashCommand("pwd", null, false, true),

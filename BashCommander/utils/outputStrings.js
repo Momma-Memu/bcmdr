@@ -2,13 +2,16 @@ export const helpStr = () => console.log(`
 ~ Bash Commander Help Menu ~
 
 - Help Menu
-    bcmdr --help | -h
+    bcmdr --help | -h | help | h
 
 - Show Config Information
-    bcmdr --config | -c
+    bcmdr --config | -c | config | c
 
 - Show Alias Tutorial 
-    bcmdr --tutorial | -t
+    bcmdr --tutorial | -t | tutorial | t
+
+- List all existing aliases
+    bcmdr --list | -l | list | l
 `);
 
 export const configStr = (config, bcmdrPath) => console.log(`
