@@ -12,6 +12,15 @@ export const helpStr = () => console.log(`
 
 - List all existing aliases
     bcmdr --list | -l | list | l
+
+- Add all existing aliases
+    bcmdr --add | -a | add | a
+
+- Edit all existing aliases
+    bcmdr --edit | -e | edit | e
+
+- Remove an existing alias
+    bcmdr --remove | -r | remove | r
 `);
 
 export const configStr = (config, bcmdrPath) => console.log(`
@@ -22,34 +31,37 @@ Config File Path: ${config.path.split("/").slice(0, 3).join("/")}${bcmdrPath}
 
 export const tutorialStr = () => console.log(`
 ~ How To Guides ~
+- CLI Syntax
+  The first argument to bcmdr should match either a menu option as stated in the
+  help guide (try "bcmdr help"), or the name of a user created alias.
+  Arguments can be formatted with two hyphens "--" one, or none.
 
-- ADD Alias
-  Aliases can be created by supplying a name, command, 
-  default arguments (Which can be other aliases!), a flag 
-  for enabling output logs, and a flag for running the command detached.
+- Add/Edit/Remove Alias
+  Aliases can be created by supplying a name, command, sub arguments 
+  (which can be other aliases), a flag for enabling output logs, 
+  and a flag for running the command detached.
 
   Only the "name" and "command" arguments are required to create a new alias, 
-  by default, no default arguments/flags are supplied to your alias, 
-  logs are enabled by default, and detached mode is not enforced by default.
+  by default, bcmdr will supply the neccesarry fallback values.
 
   note:
-  You CANNOT run a command where logs are enabled, and detached is forced.
-  This wouldn't break anything, however, logs cannot be shown to you
-  if you use detached mode.
+  You will not see any logs when running commands when detached is true even 
+  if you set showLogs to true.
 
   Examples:
-  bcmdr --add name=dolphin command=dolphin defaults=pwd logs=false detached=true
-  bcmdr -a name=dolphin command=dolphin defaults=pwd logs=false detached=true
-  bcmdr -a dolphin dolphin pwd false true
+  bcmdr --add --open dolphin pwd false true
+  bcmdr -a -open dolphin pwd false true
+  bcmdr a dolphin dolphin pwd false true
 
 - EDIT Alias:
   Examples:
-  bcmdr --edit name=open command=dolphin defaults=pwd logs=false detached=true
-  bcmdr -e name=open command=dolphin defaults=pwd logs=false detached=true
-  bcmdr -e open dolphin pwd false true
+  bcmdr --edit --open dolphin pwd false true
+  bcmdr -e -open dolphin pwd false true
+  bcmdr e open dolphin pwd false true
 
 - REMOVE Alias:
   Examples:
-  bcmdr --remove open
-  bcmdr -r open
+  bcmdr --remove --open
+  bcmdr -r -open
+  bcmdr r open
 `);

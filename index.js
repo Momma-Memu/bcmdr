@@ -6,6 +6,7 @@ import AliasEditor from "./BashCommander/utils/AliasEditor.js";
 
 class BashCommander extends BCObject {
   #aliasEditor = new AliasEditor();
+
   #argMap = {
     h: () => this.logHelp(),
     help: () => this.logHelp(),
@@ -18,6 +19,15 @@ class BashCommander extends BCObject {
 
     l: () => this.showAliases(),
     list: () => this.showAliases(),
+    
+    a: () => this.addAlias(),
+    add: () => this.addAlias(),
+
+    e: () => this.addAlias(),
+    edit: () => this.addAlias(),
+
+    r: () => this.addAlias(),
+    remove: () => this.addAlias(),
   }
   
   constructor() {
@@ -31,15 +41,27 @@ class BashCommander extends BCObject {
   }
 
   addAlias() {
-    // this.#aliasEditor.addAlias();
+    if (this.parsedArgs < 5) {
+      this.logHelp();
+    } else {
+      this.#aliasEditor.addAlias();
+    }
   }
 
   editAlias() {
-    // this.#aliasEditor.editAlias();
+    if (this.parsedArgs < 6) {
+      this.logHelp();
+    } else {
+      this.#aliasEditor.editAlias();
+    }
   }
 
   removeAliase() {
-    // this.#aliasEditor.removeAlias();
+    if (this.parsedArgs < 1) {
+      this.logHelp();      
+    } else {
+      this.#aliasEditor.removeAlias();
+    }
   }
 
   #parse() {
@@ -49,8 +71,7 @@ class BashCommander extends BCObject {
       this.#argMap[this.parsedArgs[0]]();
     } else {
       const { command, defaultArgs, forceFreeTerminal, showLogs } = this.#isInternalCmd() || this.#isUsrCmd();
-      const chain = new BashCommand(command, this.#buildCmdChain(defaultArgs), forceFreeTerminal, showLogs);
-      console.log(chain);
+      new BashCommand(command, this.#buildCmdChain(defaultArgs), forceFreeTerminal, showLogs).run();
     }
   }
   
@@ -67,7 +88,7 @@ class BashCommander extends BCObject {
   }
 
   #validateArgs() {
-    return this.parsedArgs.length && (this.#isInternalCmd() || this.#isUsrCmd());
+    return this.parsedArgs.length && (this.#isBCmdCLI() || this.#isInternalCmd() || this.#isUsrCmd());
   }
 
   /** 
@@ -112,6 +133,5 @@ class BashCommander extends BCObject {
     });
   }
 }
-
 
 new BashCommander();

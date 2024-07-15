@@ -1,5 +1,5 @@
 {
-  "dolphin": {
+  "open": {
     "command": "dolphin",
     "defaultArgs": ["pwd"],
     "showLogs": true,

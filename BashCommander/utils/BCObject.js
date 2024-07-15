@@ -24,7 +24,7 @@ class BCObject {
     this.logConfig = () => configStr(config, this.#bcmdrPath);
 
     if (this.args.length) {
-      this.#parsedArgs = this.args.join("").split("-").filter((arg) => arg !== "");
+      this.#parsedArgs = this.args.map(arg => arg.split("-").join(""))
     }
   }
 
