@@ -71,7 +71,8 @@ class BashCommander extends BCObject {
       this.#argMap[this.parsedArgs[0]]();
     } else {
       const { command, defaultArgs, forceFreeTerminal, showLogs } = this.#isInternalCmd() || this.#isUsrCmd();
-      new BashCommand(command, this.#buildCmdChain(defaultArgs), forceFreeTerminal, showLogs).run();
+      const commandChain = new BashCommand(command, this.#buildCmdChain(defaultArgs), forceFreeTerminal, showLogs);
+      commandChain.run();
     }
   }
   
@@ -100,7 +101,6 @@ class BashCommander extends BCObject {
   #buildCmdChain(commandChain = [], commandTree = [], depth = 0) {
     // TODO: Need to add option for non BashCommand args...
     if (!commandChain || (Array.isArray(commandChain) && !commandChain.length)) {
-      console.log(commandTree);
       return [];
     }
 

@@ -1,5 +1,4 @@
 import { spawn } from "node:child_process";
-import { argv } from "node:process";
 
 export default class BashCommand {
   /**
@@ -28,24 +27,24 @@ export default class BashCommand {
     
     this.freeTerminal = freeTerminal;
     this.showLogs = showLogs;
-
     try {
       if (!this.command) {
         throw new Error("")
       }
-  
+      
     } catch (err) {
       console.error(err);
     }
   }
 
   async run() {
-    const dependencyComannds = this.args.filter((command) => command instanceof BashCommand);
+    const dependencyComannds = this.defaultArgs.filter((
+      command
+    ) => command instanceof BashCommand);
     
-    for (let index = 0; index < dependencyComannds.length; index++) {
-      const command = dependencyComannds[index];
+    for await (const command of dependencyComannds) {
       const result = await command.run();
-      this.args[index] = result;
+      this.args.push(result);
     }
 
     return await this.#execute();

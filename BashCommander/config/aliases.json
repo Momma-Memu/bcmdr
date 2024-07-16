@@ -3,6 +3,6 @@
     "command": "dolphin",
     "defaultArgs": ["pwd"],
     "showLogs": true,
-    "forceFreeTerminal": false
+    "forceFreeTerminal": true
   }
 }
