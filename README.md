@@ -30,7 +30,6 @@ managing your aliases easy as well, offering ways to edit, remove, and list any 
 BCmdr will update your bash_profile, or bashrc file on your behalf, WITHOUT overwriting any existing content within that file
 by tracking where the aliases created with it begin, and end. 
 
-
 # Setup - Installation
 - TBD
 
@@ -51,7 +50,6 @@ In the event BCmdr is unable to determine where it's aliases begin and end withi
 BCmdr will reference an internal backup of your latest command entries and create a draft of your restored bash file.
 The draft is then shown to you, and requires your approval/rejection to restore the entire file.
 
-
 # Nesting/Chaining BashCommands
 One notable feature of BCmdr is the ability to pass BashCommands as arguments to other BashCommand.
 You may hypothetically create a BashCommand, "A", that uses the output of "B" as an argument, or have 
@@ -66,64 +64,71 @@ you try to create, add, edit any commands that would cause this behavior.
 Note: All commands (aside from those you create and add to your bash_profile / bashrc file) are prefixed
 with "bcmdr" and has been ommitted from the table for brevity. Below each table are examples of their use.
 
-
 ### Help/Guide/Options
 | Option   | Variations | Description         |
 |:---------|:-----------|:--------------------|
-| help     | --, -, h   | Display Help        |
-| config   | --, -, c   | Display Config      |
-| path     | --, -, p   | Set Alias save file |
-| tutorial | --, -, t   | Display Tutorial    |
-| list     | --, -, l   | List Aliases        |
+| help     | help, h    | Display Help        |
+| config   | config, c  | Display Config      |
+| path     | path, p    | Set Alias save file |
+| guide    | guide, g   | Display Tutorial    |
+| list     | list, l    | List Aliases        |
 
 ```
-$ bcmdr --help
-$ bcmdr -path
+$ bcmdr help
+$ bcmdr config
+$ bcmdr path
+$ bcmdr guide
 $ bcmdr list
-$ bcmdr --h
-$ bcmdr -p
+$ bcmdr h
+$ bcmdr c
+$ bcmdr p
+$ bcmdr g
 $ bcmdr l
 ```
 
 ### Alias Operations
-| Option | Variations | Total Args | Description       |
-|:-------|:-----------|:-----------|:------------------|
-| add    | --, -, a   | 5          | Add a New Alias   |
-| edit   | --, -, e   | 6          | Edit an Alias     |
-| remove | --, -, r   | 1          | Remove an Alias   |
+| Option | Variations | Args  | Description       |
+|:-------|:-----------|:------|:------------------|
+| add    | add, a     | 6     | Add a New Alias   |
+| edit   | edit, e    | 7     | Edit an Alias     |
+| remove | remove, r  | 1     | Remove an Alias   |
 
 ### ADD Alias Arguments
-| Name     | Order  | Exmaples     | Description             |
-|:---------|:-------|:-------------|:------------------------|
-| name     | 1      | open, work   | Name of Alias           |
-| command  | 2      | dolphin      | Name of command         |
-| args     | 3      | pwd          | It's Arguments          |
-| detached | 4      | true, false  | Detached from terminal  |
-| logs     | 5      | false, true  | Logs output to terminal |
-
-
-### EDIT Alias Arguments
-| Name     | Order  | Exmaples     | Description             |
-|:---------|:-------|:-------------|:------------------------|
-| name     | 1      | open, work   | Name of Alias           |
-| new name | 2      | open, work   | New name of alias       |
-| command  | 3      | dolphin      | Name of command         |
-| args     | 4      | pwd          | It's Arguments          |
-| detached | 5      | true, false  | Detached from terminal  |
-| logs     | 6      | false, true  | Logs output to terminal |
-
-
-### REMOVE Alias Arguments
-| Name     | Order  | Exmaples     | Description             |
-|:---------|:-------|:-------------|:------------------------|
-| name     | 1      | open         | Name of alias to remove |
-
+| Name     | Optional | Default   | Description          |
+|:---------|:---------|:----------|:---------------------|
+| name     | No       | N/A       | Alias name           |
+| command  | No       | N/A       | System command name  |
+| pargs    | Yes      | []        | Plain text args      |
+| dargs    | Yes      | []        | Dependent commands   |
+| detached | Yes      | false     | Detach from terminal |
+| logs     | Yes      | true      | Log command output   |
 
 ```
-$ bcmdr --add dolphin dolphin pwd true false 
-$ bcmdr -edit dolphin open dolphin pwd false false
-$ bcmdr remove open
-$ bcmdr -add work code ~/work false false 
-$ bcmdr -e work code ~/projects/work false false
-$ bcmdr r work
+$ bcmdr add name=open,cmd=dolphin,darg=pwd,detach=false,logs=false
+```
+
+### EDIT Alias Arguments
+| Name     | Optional | Default   | Description          |
+|:---------|:---------|:----------|:---------------------|
+| alias    | No       | N/A       | Current Alias name   |
+| name     | Yes      | Unchanged | New Alias name       |
+| command  | Yes      | Unchanged | System command name  |
+| pargs    | Yes      | Unchanged | Plain text args      |
+| dargs    | Yes      | Unchanged | Dependent commands   |
+| detached | Yes      | Unchanged | Detach from terminal |
+| logs     | Yes      | Unchanged | Log command output   |
+
+```
+$ bcmdr edit alias=dolphin,name=open 
+$ bcmdr e alias=open,name=dolphin 
+```
+
+### REMOVE Alias Arguments
+| Name     | Optional | Description    |
+|:---------|:---------|:---------------|
+| alias    | No       | Name of Alias  |
+
+```
+$ bcmdr remove alias=dolphin 
+$ bcmdr r alias=open
 ```
