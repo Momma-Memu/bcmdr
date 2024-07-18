@@ -1,8 +1,11 @@
 // @ts-check
+
+// Node Module Imports
 import { argv } from "node:process";
 
+// Internal Imports
 import internalCmds from '../Command/Internal.js';
-import { config, aliases } from "../config/index.js";
+import { config, aliases, actions } from "../config/index.js";
 import { helpStr, configStr, tutorialStr } from "./outputStrings.js";
 
 
@@ -12,6 +15,9 @@ class BCObject {
   
   /** @type {Array<string>} */
   #parsedArgs = [];
+
+  #actions = actions;
+
   
   #internalCmds = internalCmds;
   #bcmdrPath = "/bcmdr/BashCommander/config/";
@@ -24,8 +30,9 @@ class BCObject {
     this.logConfig = () => configStr(config, this.#bcmdrPath);
 
     if (this.args.length) {
-      this.#parsedArgs = this.args.map(arg => arg.split("-").join(""))
+      this.#parsedArgs = this.args.map(arg => arg.split("-").join(""));
     }
+    console.log(this.#buildArgMap());
   }
 
   get bcmdrPath () {
@@ -64,6 +71,27 @@ class BCObject {
 
   get parsedArgs () {
     return this.#parsedArgs;
+  }
+
+  #buildArgMap() {
+    const parsed = {};
+
+    try {
+      let [prefix, options] = this.args;
+
+      const fullName = this.#actions.translation[prefix];
+      prefix = fullName ? fullName : prefix;
+
+      const params = options.split(",");
+      return {
+        args: this.#args,
+        prefix,
+        options,
+        params,
+      };
+    } catch(_) {
+      return { prefix: "help" };
+    }
   }
 }
 

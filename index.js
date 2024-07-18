@@ -65,15 +65,16 @@ class BashCommander extends BCObject {
   }
 
   #parse() {
-    if (!this.#validateArgs()) {
-      this.logHelp();
-    } else if (this.#isBCmdCLI()) {
-      this.#argMap[this.parsedArgs[0]]();
-    } else {
-      const { command, defaultArgs, forceFreeTerminal, showLogs } = this.#isInternalCmd() || this.#isUsrCmd();
-      const commandChain = new BashCommand(command, this.#buildCmdChain(defaultArgs), forceFreeTerminal, showLogs);
-      commandChain.run();
-    }
+    console.log(this.parsedArgs)
+    // if (!this.#validateArgs()) {
+    //   this.logHelp();
+    // } else if (this.#isBCmdCLI()) {
+    //   this.#argMap[this.parsedArgs[0]]();
+    // } else {
+    //   const { command, defaultArgs, forceFreeTerminal, showLogs } = this.#isInternalCmd() || this.#isUsrCmd();
+    //   const commandChain = new BashCommand(command, this.#buildCmdChain(defaultArgs), forceFreeTerminal, showLogs);
+    //   commandChain.run();
+    // }
   }
   
   #isBCmdCLI() {
