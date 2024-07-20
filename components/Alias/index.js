@@ -14,7 +14,7 @@ export default class Alias {
    * @param {boolean} [logs=true]
    * @param {boolean} [detach=false]
    */
-  constructor(name, cmd="", pargs=[], dargs=[], chargs=[], chain=[], logs=true, detach=false) {
+  constructor(name, cmd="bash", pargs=[], dargs=[], chargs=[], chain=[], logs=true, detach=false, accepts=false) {
     /** @type {string} */
     this.name = name;
 
@@ -22,7 +22,7 @@ export default class Alias {
     this.cmd = cmd;
 
     /** @type {string[]} */
-    this.pargs = pargs || [];
+    this.pargs = this.cmd === "bash" ? ["-i", "-c", ...pargs].filter(parg => parg) : pargs;
 
     /** @type {string[]} */
     this.dargs = dargs || [];
@@ -38,6 +38,9 @@ export default class Alias {
 
     /** @type {boolean} */
     this.detach = typeof detach === "boolean" ? detach : false;
+
+    /** @type {boolean} */
+    this.accepts = typeof accepts === "boolean" ? accepts : false;
   }
 
   get json () {
@@ -58,8 +61,8 @@ export default class Alias {
 const aliases = {};
 
 for (const alias of Object.values(aliasConfigs)) {
-  const { name, cmd, pargs, dargs, chargs, chain, logs, detach } = alias;
-  const aliasInstance = new Alias(name, cmd, pargs, dargs, chargs, chain, logs, detach);
+  const { name, cmd, pargs, dargs, chargs, chain, logs, detach, accepts } = alias;
+  const aliasInstance = new Alias(name, cmd, pargs, dargs, chargs, chain, logs, detach, accepts);
   
   aliases[alias.name] = aliasInstance;
 }

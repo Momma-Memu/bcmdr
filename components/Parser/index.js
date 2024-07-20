@@ -2,12 +2,11 @@
 
 // Node Module Imports
 import { argv } from "node:process";
+import { createRequire } from "module";
 
 // Internal Imports
 import Alias, { aliases } from "../Alias/index.js";
-import { config } from "../config/index.js";
 import { helpStr, configStr, tutorialStr } from "../utils/outputStrings.js";
-
 
 export default class Parser {
   /** @type {Array<string>} */
@@ -51,12 +50,14 @@ export default class Parser {
 
   #aliases = aliases;
   #bcmdrPath = "/bcmdr/BashCommander/config/";
-  #config = config;
+
+/** @type {{ file: string }} */
+  #config = createRequire(import.meta.url)("../../config.json");;
 
   constructor() {
     this.logHelp = helpStr;
     this.logGuide = tutorialStr;
-    this.logConfig = () => configStr(config.file, this.#bcmdrPath);
+    this.logConfig = () => configStr(this.#config.file, this.#bcmdrPath);
 
     if (this.#args.length) {
       const main = this.#args[0];
@@ -102,14 +103,32 @@ export default class Parser {
   
       this.args.options.forEach((option) => {
         const [name, value] = option.split("=");
-        const safeVal = ["name", "cmd", "logs", "detach"].includes(name) ? value : value.split(",");
-  
+        const safeVal = this.#toSafeVal(name, value);
+
         if (name in alias) {
-          alias[name] = safeVal;
+          if (Array.isArray(alias[name]) && alias[name].length && Array.isArray(safeVal)) {
+            alias[name].push(...safeVal);
+          } else {
+            alias[name] = safeVal;
+          }
         }
       });
   
       this.args.alias = alias;
+    }
+  }
+
+  /** 
+   * @param {string} prop
+   * @param {string} val
+   * @returns {boolean | string[] | string} */
+  #toSafeVal(prop, val) {
+    if (["logs", "detach", "accepts"].includes(prop)) {
+      return val === "true";
+    } else if (["pargs", "dargs", "chargs", "chain"].includes(prop)) {
+      return val.split(",");
+    } else {
+      return val;
     }
   }
 }

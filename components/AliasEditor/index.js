@@ -17,8 +17,7 @@ const __dirname = path.dirname(__filename); // get the name of the directory
 */
 export default class AliasEditor {
   #aliases = aliases;
-  #path = `${__dirname.split("/bcmdr/")[0]}`;
-  #bcmdrPath = `/bcmdr/${__dirname.split("/bcmdr/")[1].split("/AliasEditor")[0]}`
+  #path = `${__dirname.split("/bcmdr/")[0]}/bcmdr`;
 
   /** @type {FileManager} */
   #configFile;
@@ -36,8 +35,8 @@ export default class AliasEditor {
   
   constructor() {
     try {
-      this.#configFile = new FileManager(`${this.#path}${this.#bcmdrPath}/config/config.json`, true);
-      this.#aliasFile = new FileManager(`${this.#path}${this.#bcmdrPath}/Alias/aliases.json`);
+      this.#configFile = new FileManager(`${this.#path}/config.json`, true);
+      this.#aliasFile = new FileManager(`${this.#path}/components/Alias/aliases.json`);
       
       if (typeof this.#configFile.content === "object") {
         this.#config = this.#configFile.content;
@@ -69,12 +68,5 @@ export default class AliasEditor {
   changeConfig(newConfig) {
     this.#config = newConfig;
     this.#configFile.saveChanges(this.#config);
-  }
-
-  async #initConfig() {
-    // console.log(__dirname); // < use this instead to fix config info
-    // this.config.path = `/home/${this.config.username}/.bashrc`;
-
-    // this.#loadFiles();
   }
 }

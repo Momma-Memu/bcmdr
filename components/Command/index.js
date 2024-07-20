@@ -30,7 +30,8 @@ export default class BashCommand {
     this.cmdChain = cmdChain || [];
     this.args = this.alias.pargs || [];
 
-    if (this.alias.pargs) {
+    if (this.alias.accepts) {
+      this.args.push(...process.argv.slice(3));
     }
 
     if (!this.args.length) {
@@ -43,6 +44,7 @@ export default class BashCommand {
       for await (const command of this.cmdChargs) {
         const result = await command.run();
         this.args.push(result);
+        console.log(this.args)
       }
     } else if (this.cmdChain.length) {
       for await (const command of this.cmdChain) {
@@ -83,7 +85,7 @@ export default class BashCommand {
       });
   
       if (exitCode) {
-        throw new Error(`${this.alias.cmd} process exited with code ${exitCode}, ${error}`);
+        throw new Error(`${this.alias.cmd} process exited with code ${exitCode}, ${this.logs.error}`);
       }
 
       return this.logs.output.split("\n")[0].trim();
@@ -101,3 +103,5 @@ export default class BashCommand {
     return logStr;
   }
 }
+
+// new BashCommand(new Alias("work-mowgli", "bcmdr code", ["~/work/mowgli"], [], [], [], false, true)).run();

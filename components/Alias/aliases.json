@@ -7,7 +7,8 @@
     "chargs": [],
     "chain": [],
     "logs": false,
-    "detach": false
+    "detach": false,
+    "accepts": false
   },
   "open": {
     "name": "open",
@@ -19,6 +20,36 @@
     ],
     "chain": [],
     "logs": false,
-    "detach": true
+    "detach": true,
+    "accepts": false
+  },
+  "code": {
+    "name": "code",
+    "cmd": "flatpak",
+    "pargs": [
+      "run",
+      "com.vscodium.codium"
+    ],
+    "dargs": [],
+    "chargs": [],
+    "chain": [],
+    "logs": false,
+    "detach": false,
+    "accepts": true
+  },
+  "work": {
+    "name": "work",
+    "cmd": "bash",
+    "pargs": [
+      "-i",
+      "-c",
+      "bcmdr code ~/work/mowgli"
+    ],
+    "dargs": [],
+    "chargs": [],
+    "chain": [],
+    "logs": true,
+    "detach": false,
+    "accepts": false
   }
 }

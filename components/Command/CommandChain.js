@@ -7,6 +7,9 @@ export default class CommandChain {
   /** @param {Alias} rootAlias */
   constructor(rootAlias) {
     this.alias = rootAlias;
+    // const bashAlias = new Alias("bash", "bash", ["-i", "-c"])
+    // const bashRoot = new BashCommand(bashAlias);
+
     try {
       const cmdChargs = this.#buildCmdChain(rootAlias.chargs);
       const cmdChain = this.#buildCmdChain(rootAlias.chain);
