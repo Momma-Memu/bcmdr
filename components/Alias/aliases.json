@@ -20,17 +20,5 @@
     "chain": [],
     "logs": false,
     "detach": true
-  },
-  "work": {
-    "name": "work",
-    "cmd": "code",
-    "pargs": [
-      "/home/memu/work/demo"
-    ],
-    "dargs": [],
-    "chargs": [],
-    "chain": [],
-    "logs": true,
-    "detach": false
   }
 }

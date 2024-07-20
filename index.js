@@ -23,6 +23,11 @@ class BashCommander {
     this.parser.logGuide();
   }
 
+  path() {
+    const newFileName = this.parser.args.options[0];
+    this.#aliasEditor.changeConfig({ file: newFileName });
+  }
+
   list() {
     console.log("\n~ Your Aliases ~\n");
     console.log(this.parser.usrAliases, "\n");

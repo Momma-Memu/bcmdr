@@ -65,10 +65,10 @@ export default class AliasEditor {
     this.#aliasFile.saveChanges(this.#aliases);
   }
 
-  /** @param {{ username: string, path: string }} newConfig  */
+  /** @param {{ file: string }} newConfig  */
   changeConfig(newConfig) {
-    // this.config = newConfig;
-    // this.#configFile.saveChanges(this.config);
+    this.#config = newConfig;
+    this.#configFile.saveChanges(this.#config);
   }
 
   async #initConfig() {

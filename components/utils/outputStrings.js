@@ -23,10 +23,9 @@ export const helpStr = () => console.log(`
     bcmdr --remove | -r | remove | r
 `);
 
-export const configStr = (config, bcmdrPath) => console.log(`
-Username: ${config.username}
-Bash File Path: ${config.path}
-Config File Path: ${config.path.split("/").slice(0, 3).join("/")}${bcmdrPath}
+export const configStr = (fileName, bcmdrPath) => console.log(`
+Bash File Name: ${fileName}
+Config File Path: ${bcmdrPath}
 `);
 
 export const tutorialStr = () => console.log(`

@@ -40,6 +40,7 @@ export default class Parser {
     remove: this.#REMOVE,
     h: this.#HELP,
     c: this.#CONFIG,
+    p: this.#PATH,
     g: this.#GUIDE,
     l: this.#LIST,
     a: this.#ADD,
@@ -55,7 +56,7 @@ export default class Parser {
   constructor() {
     this.logHelp = helpStr;
     this.logGuide = tutorialStr;
-    this.logConfig = () => configStr(config, this.#bcmdrPath);
+    this.logConfig = () => configStr(config.file, this.#bcmdrPath);
 
     if (this.#args.length) {
       const main = this.#args[0];
@@ -75,7 +76,7 @@ export default class Parser {
     return this.#config;
   }
 
-  /** @param {{ username: string, path: string }} config */
+  /** @param {{ file: string }} config */
   set config(config) {
     this.#config = config;
   }
