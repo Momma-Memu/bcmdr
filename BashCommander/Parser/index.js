@@ -6,10 +6,10 @@ import { argv } from "node:process";
 // Internal Imports
 import Alias, { aliases } from "../Alias/index.js";
 import { config } from "../config/index.js";
-import { helpStr, configStr, tutorialStr } from "./outputStrings.js";
+import { helpStr, configStr, tutorialStr } from "../utils/outputStrings.js";
 
 
-class BCObject {
+export default class Parser {
   /** @type {Array<string>} */
   #args = argv.slice(2) || [];
 
@@ -27,7 +27,7 @@ class BCObject {
   #LIST = "list";
   #ADD = "add";
   #EDIT = "edit";
-  #REMOVE = "remove"
+  #REMOVE = "remove";
 
   #prefixes = {
     help: this.#HELP,
@@ -54,12 +54,14 @@ class BCObject {
 
   constructor() {
     this.logHelp = helpStr;
-    this.logTutorial =  tutorialStr;
+    this.logGuide = tutorialStr;
     this.logConfig = () => configStr(config, this.#bcmdrPath);
 
     if (this.#args.length) {
-      this.parsedArgs.prefix = this.#prefixes[this.#args[0]] || "help";
-      this.parsedArgs.options = this.#args.slice(1);
+      const main = this.#args[0];
+
+      this.args.prefix = this.#prefixes[main] || aliases[main]?.name || "help";
+      this.args.options = this.#args.slice(1);
     }
 
     this.#buildAliasProps();
@@ -83,15 +85,21 @@ class BCObject {
     return this.#aliases;
   }
   
-  get parsedArgs () {
+  get args () {
     return this.#parsedArgs;
   }
+  
   #buildAliasProps() {
-    const { prefix } = this.parsedArgs;
-    if ([this.#ADD, this.#REMOVE, this.#EDIT].includes(prefix)) {
+    const { prefix } = this.args;
+    
+    if (prefix in aliases) {
+      // Check if cmd is to run a user alias.
+      this.args.alias = aliases[prefix];
+    } else if ([this.#ADD, this.#REMOVE, this.#EDIT].includes(prefix)) {
+      // Check if cmd is an alias operation.
       const alias = new Alias("");
   
-      this.parsedArgs.options.forEach((option) => {
+      this.args.options.forEach((option) => {
         const [name, value] = option.split("=");
   
         if (name in alias) {
@@ -99,9 +107,7 @@ class BCObject {
         }
       });
   
-      this.parsedArgs.alias = alias;
+      this.args.alias = alias;
     }
   }
 }
-
-export default BCObject;

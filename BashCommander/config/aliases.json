@@ -1,8 +1,0 @@
-{
-  "open": {
-    "command": "dolphin",
-    "defaultArgs": ["pwd"],
-    "showLogs": true,
-    "forceFreeTerminal": true
-  }
-}
