@@ -101,9 +101,10 @@ export default class Parser {
   
       this.args.options.forEach((option) => {
         const [name, value] = option.split("=");
+        const safeVal = ["name", "cmd", "logs", "detach"].includes(name) ? value : value.split(",");
   
         if (name in alias) {
-          alias[name] = value;
+          alias[name] = safeVal;
         }
       });
   

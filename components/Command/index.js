@@ -28,11 +28,13 @@ export default class BashCommand {
     
     this.cmdChargs = cmdChargs || [];
     this.cmdChain = cmdChain || [];
+    this.args = this.alias.pargs || [];
 
-    this.args = [...alias.pargs]
+    if (this.alias.pargs) {
+    }
 
     if (!this.args.length) {
-      this.args.push(...this.alias.dargs)
+      this.args.push(...this.alias.dargs);
     }
   }
 
@@ -75,8 +77,8 @@ export default class BashCommand {
   
       const exitCode = await new Promise((resolve, reject) => {
         command.on('close', resolve);
-        if (this.alias.logs) {
-          console.log(this.alias, this.logs.output);
+        if (this.alias.logs && this.logs.output) {
+          console.log(this.logs.output);
         }
       });
   

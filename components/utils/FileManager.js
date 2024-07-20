@@ -43,8 +43,6 @@ export default class FileManager {
     try {
       this.#content = readFileSync(this.#path, { encoding: 'utf8', flag: 'r' });
 
-      console.log(this.isJson)
-
       if (this.isJson) {
         this.#content = JSON.parse(this.#content);
       }
@@ -55,14 +53,13 @@ export default class FileManager {
 
   /** @param {string} data */
   #writeFile(data) {
-    console.log(data);
-    // writeFile(this.#path, data, 'utf8', (err) => {
-    //   if (err) {
-    //     throw new BashCommandError({
-    //       name: "FileWriterError: ",
-    //       msg: `Could not write to, or locate file at the given path, "${this.#path}"`
-    //     });
-    //   }
-    // }); 
+    writeFile(this.#path, data, 'utf8', (err) => {
+      if (err) {
+        throw new BashCommandError({
+          name: "FileWriterError: ",
+          msg: `Could not write to, or locate file at the given path, "${this.#path}"`
+        });
+      }
+    }); 
   }
 }

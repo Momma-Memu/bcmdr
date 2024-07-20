@@ -2,16 +2,35 @@
   "pwd": {
     "name": "pwd",
     "cmd": "pwd",
-    "logs": false
+    "pargs": [],
+    "dargs": [],
+    "chargs": [],
+    "chain": [],
+    "logs": false,
+    "detach": false
   },
   "open": {
     "name": "open",
     "cmd": "dolphin",
     "pargs": [],
     "dargs": [],
-    "chargs": ["pwd"],
+    "chargs": [
+      "pwd"
+    ],
     "chain": [],
     "logs": false,
     "detach": true
+  },
+  "work": {
+    "name": "work",
+    "cmd": "code",
+    "pargs": [
+      "/home/memu/work/demo"
+    ],
+    "dargs": [],
+    "chargs": [],
+    "chain": [],
+    "logs": true,
+    "detach": false
   }
 }

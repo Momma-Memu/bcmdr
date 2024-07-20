@@ -1,7 +1,6 @@
-import BashCommand from "./components/Command/index.js";
-import AliasEditor from "./components/AliasEditor/AliasEditor.js";
-import Parser from "./components/Parser/index.js";
 import CommandChain from "./components/Command/CommandChain.js";
+import AliasEditor from "./components/AliasEditor/index.js";
+import Parser from "./components/Parser/index.js";
 
 
 class BashCommander {
@@ -26,19 +25,19 @@ class BashCommander {
 
   list() {
     console.log("\n~ Your Aliases ~\n");
-    console.log(this.usrAliases, "\n");
+    console.log(this.parser.usrAliases, "\n");
   }
 
-  addAlias() {
-    // this.#aliasEditor.addAlias();
+  add() {
+    this.#aliasEditor.addAlias(this.parser.args.alias);
   }
 
-  editAlias() {
-    // this.#aliasEditor.editAlias();
+  edit() {
+    this.#aliasEditor.editAlias(this.parser.args.alias);
   }
 
-  removeAlias() {
-    // this.#aliasEditor.removeAlias();
+  remove() {
+    this.#aliasEditor.removeAlias(this.parser.args.alias.name);
   }
 
   #run () {

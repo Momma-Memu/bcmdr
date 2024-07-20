@@ -5,10 +5,10 @@ const aliasConfigs = createRequire(import.meta.url)("./aliases.json");
 
 export default class Alias {
   /** 
-   * @param {string} name 
+   * @param {string} name
    * @param {string} [cmd=""]
    * @param {string[]} [pargs=[]]
-   * @param {string[]} [dargs=[]] 
+   * @param {string[]} [dargs=[]]
    * @param {string[]} [chargs=[]]
    * @param {string[]} [chain=[]]
    * @param {boolean} [logs=true]

@@ -1,6 +1,6 @@
 // @ts-check
 
-import Alias from '../Alias/index.js';
+import Alias, { aliases } from '../Alias/index.js';
 import FileManager from "../utils/FileManager.js";
 
 import path from 'path';
@@ -16,8 +16,9 @@ const __dirname = path.dirname(__filename); // get the name of the directory
  * the a specified bash config file, or default .bashrc file.
 */
 export default class AliasEditor {
+  #aliases = aliases;
   #path = `${__dirname.split("/bcmdr/")[0]}`;
-  #bcmdrPath = `/bcmdr/${__dirname.split("/bcmdr/")[1].split("/AliasEditor")[0]}/config/`
+  #bcmdrPath = `/bcmdr/${__dirname.split("/bcmdr/")[1].split("/AliasEditor")[0]}`
 
   /** @type {FileManager} */
   #configFile;
@@ -30,11 +31,13 @@ export default class AliasEditor {
 
   /** @type {{ file: string }} */
   #config
+
+
   
   constructor() {
     try {
-      this.#configFile = new FileManager(`${this.#path}${this.#bcmdrPath}config.json`, true);
-      this.#aliasFile = new FileManager(`${this.#path}${this.#bcmdrPath}aliases.json`);
+      this.#configFile = new FileManager(`${this.#path}${this.#bcmdrPath}/config/config.json`, true);
+      this.#aliasFile = new FileManager(`${this.#path}${this.#bcmdrPath}/Alias/aliases.json`);
       
       if (typeof this.#configFile.content === "object") {
         this.#config = this.#configFile.content;
@@ -46,20 +49,20 @@ export default class AliasEditor {
 
   /** @param {Alias} alias */
   addAlias(alias) {
-    // this.usrAliases[alias.name] = alias;
-    // this.#aliasFile.saveChanges(this.usrAliases);
+    this.#aliases[alias.name] = alias;
+    this.#aliasFile.saveChanges(this.#aliases);
   }
 
   /** @param {Alias} alias */
   editAlias(alias) {
-    // this.usrAliases[alias.name] = alias;
-    // this.#aliasFile.saveChanges(this.usrAliases);
+    this.#aliases[alias.name] = alias;
+    this.#aliasFile.saveChanges(this.#aliases);
   }
 
   /** @param {string} name */
   removeAlias(name) {
-    // delete this.usrAliases[name];
-    // this.#aliasFile.saveChanges(this.usrAliases);
+    delete this.#aliases[name];
+    this.#aliasFile.saveChanges(this.#aliases);
   }
 
   /** @param {{ username: string, path: string }} newConfig  */
