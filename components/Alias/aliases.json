@@ -1,0 +1,17 @@
+{
+  "pwd": {
+    "name": "pwd",
+    "cmd": "pwd",
+    "logs": false
+  },
+  "open": {
+    "name": "open",
+    "cmd": "dolphin",
+    "pargs": [],
+    "dargs": [],
+    "chargs": ["pwd"],
+    "chain": [],
+    "logs": false,
+    "detach": true
+  }
+}

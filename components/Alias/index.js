@@ -58,7 +58,10 @@ export default class Alias {
 const aliases = {};
 
 for (const alias of Object.values(aliasConfigs)) {
-  aliases[alias.name] = new Alias(...Object.values(alias))
+  const { name, cmd, pargs, dargs, chargs, chain, logs, detach } = alias;
+  const aliasInstance = new Alias(name, cmd, pargs, dargs, chargs, chain, logs, detach);
+  
+  aliases[alias.name] = aliasInstance;
 }
 
 export { aliases };

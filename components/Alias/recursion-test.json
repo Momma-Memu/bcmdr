@@ -1,19 +1,4 @@
 {
-  "pwd": {
-    "name": "pwd",
-    "cmd": "pwd"
-  },
-  "open": {
-    "name": "open",
-    "cmd": "dolphin",
-    "pargs": ["--select"],
-    "dargs": [],
-    "chargs": ["pwd"],
-    "chain": [],
-    "logs": true,
-    "detach": true
-  },
-
   "recA": {
     "name": "recA",
     "cmd": "",
@@ -24,9 +9,28 @@
     "logs": false,
     "detach": false
   },
-
   "recB": {
     "name": "recB",
+    "cmd": "",
+    "pargs": [],
+    "dargs": [],
+    "chargs": ["recC"],
+    "chain": [],
+    "logs": false,
+    "detach": false
+  },
+  "recC": {
+    "name": "recC",
+    "cmd": "",
+    "pargs": [],
+    "dargs": [],
+    "chargs": ["recD"],
+    "chain": [],
+    "logs": false,
+    "detach": false
+  },
+  "recD": {
+    "name": "recD",
     "cmd": "",
     "pargs": [],
     "dargs": [],

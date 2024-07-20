@@ -1,6 +1,7 @@
-import BashCommand from "./BashCommander/Command/index.js";
-import AliasEditor from "./BashCommander/utils/AliasEditor.js";
-import Parser from "./BashCommander/Parser/index.js";
+import BashCommand from "./components/Command/index.js";
+import AliasEditor from "./components/utils/AliasEditor.js";
+import Parser from "./components/Parser/index.js";
+import CommandChain from "./components/Command/CommandChain.js";
 
 
 class BashCommander {
@@ -41,10 +42,7 @@ class BashCommander {
   }
 
   #run () {
-    const commandChain = new BashCommand(this.parser.args.alias);
-    console.log(commandChain);
-
-    // commandChain.run();
+    new CommandChain(this.parser.args.alias).run();
   }
 
   #parse() {
