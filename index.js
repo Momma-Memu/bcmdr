@@ -1,5 +1,5 @@
 import BashCommand from "./components/Command/index.js";
-import AliasEditor from "./components/utils/AliasEditor.js";
+import AliasEditor from "./components/AliasEditor/AliasEditor.js";
 import Parser from "./components/Parser/index.js";
 import CommandChain from "./components/Command/CommandChain.js";
 
@@ -30,15 +30,15 @@ class BashCommander {
   }
 
   addAlias() {
-    this.#aliasEditor.addAlias();
+    // this.#aliasEditor.addAlias();
   }
 
   editAlias() {
-    this.#aliasEditor.editAlias();
+    // this.#aliasEditor.editAlias();
   }
 
   removeAlias() {
-    this.#aliasEditor.removeAlias();
+    // this.#aliasEditor.removeAlias();
   }
 
   #run () {
