@@ -19,10 +19,10 @@ export default class Alias {
     this.name = name;
 
     /** @type {string} */
-    this.cmd = cmd;
+    this.cmd = cmd || "bash";
 
     /** @type {string[]} */
-    this.pargs = this.cmd === "bash" ? ["-i", "-c", ...pargs].filter(parg => parg) : pargs;
+    this.pargs = this.#applyDefaults(pargs);
 
     /** @type {string[]} */
     this.dargs = dargs || [];
@@ -54,6 +54,14 @@ export default class Alias {
       logs: this.logs,
       detach: this.detach
     });
+  }
+
+  #applyDefaults(pargs=[]) {
+    if (this.name === "bash" && (!pargs.includes("-i") || !pargs.includes("-c"))) {
+      return ["-i", "-c", ...pargs];
+    }
+
+    return pargs || [];
   }
 }
 

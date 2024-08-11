@@ -1,0 +1,79 @@
+#/usr/bin/env bash
+
+# bash completion for Bash Commander (bcmdr)
+
+if ! command -v bcmdr &> /dev/null; then
+  return
+fi
+
+complete bcmdr "help config guide path list add edit remove"
+
+# complete add "name="
+
+# __bcmdr_generate_completion() {
+#   declare current_word
+#   current_word="${COMP_WORDS[COMP_CWORD]}"
+#   # shellcheck disable=SC2207
+#   COMPREPLY=($(compgen -W "$1" -- "${current_word}"))
+#   return 0
+# }
+
+# __bcmdr_commands() {
+#   declare current_word
+#   declare command
+
+#   current_word="${COMP_WORDS[COMP_CWORD]}"
+
+#   COMMANDS='help config guide path list add edit remove'
+
+#   if [ ${#COMP_WORDS[@]} == 4 ]; then
+
+#     command="${COMP_WORDS[COMP_CWORD - 2]}"
+#     case "${command}" in
+#       alias) __bcmdr_installed_nodes ;;
+#     esac
+
+#   else
+
+#     case "${current_word}" in
+#       -*) __bcmdr_options ;;
+#       *) __bcmdr_generate_completion "${COMMANDS}" ;;
+#     esac
+
+#   fi
+# }
+
+# __bcmdr_options() {
+#   OPTIONS='name= cmd= pargs= dargs= chargs= chain= logs= detach= accepts='
+#   __bcmdr_generate_completion "${OPTIONS}"
+# }
+
+# __bcmdr_installed_nodes() {
+#   __bcmdr_generate_completion "$(bcmdr_ls) $(__bcmdr_aliases)"
+# }
+
+# __bcmdr_aliases() {
+#   declare aliases
+#   aliases=""
+#   if [ -d "${bcmdr_DIR}/alias" ]; then
+#     aliases="$(command cd "${bcmdr_DIR}/alias" && command find "${PWD}" -type f | command sed "s:${PWD}/::")"
+#   fi
+#   echo "${aliases} node stable unstable iojs"
+# }
+
+# __bcmdr_alias() {
+#   __bcmdr_generate_completion "$(__bcmdr_aliases)"
+# }
+
+# __bcmdr() {
+#   declare previous_word
+#   previous_word="${COMP_WORDS[COMP_CWORD - 1]}"
+
+#   case "${previous_word}" in
+#     use | run | exec | ls | list | uninstall) __bcmdr_installed_nodes ;;
+#     alias | unalias) __bcmdr_alias ;;
+#     *) __bcmdr_commands ;;
+#   esac
+
+#   return 0
+# }

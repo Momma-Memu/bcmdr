@@ -1,27 +1,14 @@
 {
-  "pwd": {
-    "name": "pwd",
-    "cmd": "pwd",
-    "pargs": [],
-    "dargs": [],
-    "chargs": [],
-    "chain": [],
-    "logs": false,
-    "detach": false,
-    "accepts": false
-  },
   "open": {
     "name": "open",
     "cmd": "dolphin",
     "pargs": [],
     "dargs": [],
-    "chargs": [
-      "pwd"
-    ],
+    "chargs": [],
     "chain": [],
     "logs": false,
     "detach": true,
-    "accepts": false
+    "accepts": true
   },
   "code": {
     "name": "code",
@@ -34,7 +21,7 @@
     "chargs": [],
     "chain": [],
     "logs": false,
-    "detach": false,
+    "detach": true,
     "accepts": true
   },
   "work": {
@@ -43,7 +30,85 @@
     "pargs": [
       "-i",
       "-c",
-      "bcmdr code ~/work/mowgli"
+      "bcmdr code ~/bcmdr"
+    ],
+    "dargs": [],
+    "chargs": [],
+    "chain": [
+      "run-backend",
+      "run-frontend",
+      "spotify",
+      "sql-ui",
+      "browse-mowgli"
+    ],
+    "logs": false,
+    "detach": true,
+    "accepts": false
+  },
+  "spotify": {
+    "name": "spotify",
+    "cmd": "flatpak",
+    "pargs": [
+      "run",
+      "com.spotify.Client"
+    ],
+    "dargs": [],
+    "chargs": [],
+    "chain": [],
+    "logs": false,
+    "detach": true,
+    "accepts": false
+  },
+  "sql-ui": {
+    "name": "sql-ui",
+    "cmd": "flatpak",
+    "pargs": [
+      "run",
+      "it.fabiodistasio.AntaresSQL"
+    ],
+    "dargs": [],
+    "chargs": [],
+    "chain": [],
+    "logs": false,
+    "detach": true,
+    "accepts": false
+  },
+  "ff-browser": {
+    "name": "ff-browser",
+    "cmd": "firefox",
+    "pargs": [
+      "-new-tab"
+    ],
+    "dargs": [],
+    "chargs": [],
+    "chain": [],
+    "logs": false,
+    "detach": true,
+    "accepts": true
+  },
+  "browse-mowgli": {
+    "name": "browse-mowgli",
+    "cmd": "firefox",
+    "pargs": [
+      "-new-tab",
+      "https://localhost:5173/"
+    ],
+    "dargs": [],
+    "chargs": [],
+    "chain": [],
+    "logs": false,
+    "detach": true,
+    "accepts": false
+  },
+  "run-backend": {
+    "name": "run-backend",
+    "cmd": "konsole",
+    "pargs": [
+      "--new-tab",
+      "--workdir",
+      "~/work/metrix",
+      "-e",
+      "npm run dev"
     ],
     "dargs": [],
     "chargs": [],
@@ -51,5 +116,23 @@
     "logs": true,
     "detach": false,
     "accepts": false
+  },
+  "run-frontend": {
+    "name": "run-frontend",
+    "cmd": "konsole",
+    "pargs": [
+      "--new-tab",
+      "--workdir",
+      "~/work/mowgli",
+      "-e",
+      "npm run dev"
+    ],
+    "dargs": [],
+    "chargs": [],
+    "chain": [],
+    "logs": true,
+    "detach": true,
+    "accepts": false
   }
+  
 }
