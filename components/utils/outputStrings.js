@@ -2,25 +2,25 @@ export const helpStr = () => console.log(`
 ~ Bash Commander Help Menu ~
 
 - Help Menu
-    bcmdr --help | -h | help | h
+    bcmdr help | h
 
 - Show Config Information
-    bcmdr --config | -c | config | c
+    bcmdr config | c
 
-- Show Alias Tutorial 
-    bcmdr --tutorial | -t | tutorial | t
+- Show Alias Guide 
+    bcmdr guide | g
 
 - List all existing aliases
-    bcmdr --list | -l | list | l
+    bcmdr list | l
 
 - Add all existing aliases
-    bcmdr --add | -a | add | a
+    bcmdr add | a
 
 - Edit all existing aliases
-    bcmdr --edit | -e | edit | e
+    bcmdr edit | e
 
 - Remove an existing alias
-    bcmdr --remove | -r | remove | r
+    bcmdr remove | r
 `);
 
 export const configStr = (fileName, bcmdrPath) => console.log(`
@@ -32,7 +32,8 @@ export const tutorialStr = () => console.log(`
 - CLI Syntax:
   The first argument to bcmdr should match either a menu option from the
   help guide (try "bcmdr help"), or the name of a user created alias.
-  Bcmdr's syntax uses empty spaces, and commas.
+  Bcmdr's syntax uses empty spaces, AND commas. Commas denote 
+  the end of a (or set of) values.
 
 - Example: "bcmdr remove open"
   The above is seperated into two distinct parts. The action bcmdr should 
@@ -56,23 +57,23 @@ export const tutorialStr = () => console.log(`
   $ bcmdr add name=pwd, cmd=pwd, detach=false, logs=true
     # When optional arguments are ommitted, defaults are used.
 
-  $ bcmdr add name=open,cmd=dolphin,darg=pwd,detach=false,logs=false
+  $ bcmdr add name=open, cmd=dolphin, darg=pwd, detach=false, logs=false
     # Spaces are optional and trimmed, commas are required.
 
-  $ bcmdr a name=open,cmd=dolphin,darg=pwd,detach=true,logs=true
+  $ bcmdr a name=open, cmd=dolphin, rg=pwd, detach=true, logs=true
     # You may mix and match single and double dash syntax.
 
-  $ bcmdr a name=dolphin,cmd=dolphin,parg=,darg=pwd,detach=true,logs=false
+  $ bcmdr a name=dolphin, cmd=dolphin, parg=, darg=pwd, detach=true, logs=false
     # Empty arguments are also permitted.
 
 - EDIT Alias:
-  $ bcmdr edit alias=dolphin,name=open
+  $ bcmdr edit alias=dolphin, name=open
     # The "alias" arg specifies which to edit. Pass only what you need changed.
 
-  $ bcmdr e alias=open,name=dolphin
+  $ bcmdr e alias=open, name=dolphin
     # The "alias" arg specifies which to edit. Pass only what you need changed.
 
-  $ bcmdr e alias=open,name=dolphin,parg=,darg=pwd
+  $ bcmdr e alias=open, name=dolphin, parg=, darg=pwd
     # Empty args are valid here also, replacing original with empty/null instead.
 
 - REMOVE Alias:

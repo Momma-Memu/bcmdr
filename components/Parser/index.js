@@ -103,7 +103,7 @@ export default class Parser {
   
       this.args.options.forEach((option) => {
         const [name, value] = option.split("=");
-        const safeVal = this.#toSafeVal(name, value);
+        const safeVal = this.#toSafeVal(name.trim(), value.trim());
 
         if (name in alias) {
           if (Array.isArray(alias[name]) && alias[name].length && Array.isArray(safeVal)) {
@@ -124,11 +124,15 @@ export default class Parser {
    * @returns {boolean | string[] | string} */
   #toSafeVal(prop, val) {
     if (["logs", "detach", "accepts"].includes(prop)) {
+      // These properties describe a set of logs, a boolean detached mode,
+      // and the values a log may accept.
       return val === "true";
     } else if (["pargs", "dargs", "chargs", "chain"].includes(prop)) {
+      // This condition seperates multiple values into an array.
       return val.split(",");
     } else {
-      return val;
+      // Removes any trailing commas
+      return val.replace(/,/g, '');
     }
   }
 }

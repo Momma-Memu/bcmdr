@@ -1,14 +1,14 @@
 {
   "open": {
     "name": "open",
-    "cmd": "dolphin",
+    "cmd": "nemo",
     "pargs": [],
     "dargs": [],
     "chargs": [],
     "chain": [],
-    "logs": false,
-    "detach": true,
-    "accepts": true
+    "logs": true,
+    "detach": false,
+    "accepts": false
   },
   "code": {
     "name": "code",
@@ -134,5 +134,4 @@
     "detach": true,
     "accepts": false
   }
-  
 }
